@@ -39,6 +39,7 @@ class Police < ActiveRecord::Base
   def report
     self.updated_at = self.updated_at - 15.minutes
     save
+    remove_check
   end
 private
   def remove_check
@@ -46,5 +47,5 @@ private
       destroy
     end
   end
-  handle_asynchronously :remove_check, :run_at => Proc.new { 1.minutes.from_now }
+  handle_asynchronously :remove_check, :run_at => Proc.new { |p| p.updated_at + 1.minutes }
 end
