@@ -24,6 +24,8 @@ function initialize() {
     console.error("Geolocation is not supported by this browser.");
     map.setCenter(new google.maps.LatLng(41.162143, -8.621954)); // Porto
   }
+
+  $.map = map;
 }
 
 function update(map) {
@@ -54,3 +56,47 @@ function radius(bounds) {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+$(function(){
+  $('[data-create-radar]').click(function(event){
+    event.preventDefault();
+    $.new_marker = new google.maps.Marker({
+      position: $.map.getCenter(),
+      map: $.map,
+      draggable: true,
+      animation: google.maps.Animation.DROP,
+    });
+
+    $.new_marker_type = 'radar';
+
+    $('[data-create]').hide();
+    $('[data-submit]').show();
+  });
+
+  $('[data-submit-cancel]').click(function(event){
+    event.preventDefault();
+    $('[data-submit]').hide();
+    $('[data-create]').show();    
+
+    $.new_marker_type = null;
+    $.new_marker.setMap(null);
+    $.new_marker = null;
+  });
+
+  $('[data-submit-post]').click(function(event){
+    event.preventDefault();
+    var url = "/police";
+    lat = $.new_marker.getPosition().lat();
+    lng = $.new_marker.getPosition().lng();
+    $.post(url, 
+    {
+      latitude: lat,
+      longitude: lng,
+      type: $.new_marker_type
+    },
+    function(data) {
+      alert('ok');
+    });
+  });
+});
+
