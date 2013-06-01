@@ -23,3 +23,23 @@ post '/police/?' do
     {}.to_json
   end
 end
+
+post '/report/?' do
+  if params[:id] and Police.exists? id: params[:id]
+    police = Police.find(params[:id])
+    police.report
+    police.to_json
+  else
+    {}.to_json
+  end
+end
+
+post '/refresh/?' do
+  if params[:id] and Police.exists? id: params[:id]
+    police = Police.find(params[:id])
+    police.refresh
+    police.to_json
+  else
+    {}.to_json
+  end
+end

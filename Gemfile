@@ -5,6 +5,7 @@ gem "sinatra-activerecord"
 gem "activerecord"
 gem "geocoder"
 gem "sqlite3"
+gem 'delayed_job_active_record'
 gem "json"
 gem "pry"
 gem "tux"
