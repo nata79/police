@@ -42,20 +42,9 @@ function update() {
     polices.forEach(function(police) {
       police.remove = true;
     });
-    data.forEach(function(p) {
-      var police = findPolice(p);
-      if (police) {
-        // update police attributes
-        for (var i in p) {
-          police[i] = p[i];
-        }
-        police.infowindow.setContent(JST.info(police));
-        police.remove = false;
-      } else {
-        createMarker(p);
-        p.remove = false;
-      }
-    });
+    // update polices
+    data.forEach(updatePolice);
+    // remove not updated ones
     for (var i = 0; i < polices.length;) {
       if (polices[i].remove) {
         polices[i].marker.setMap(null);
@@ -65,6 +54,21 @@ function update() {
   });
   clearTimeout(timeouts.update);
   timeouts.update = setTimeout(update, 60000);
+}
+
+function updatePolice(p) {
+  var police = findPolice(p);
+  if (police) {
+    // update police attributes
+    for (var i in p) {
+      police[i] = p[i];
+    }
+    police.infowindow.setContent(JST.info(police));
+    police.remove = false;
+  } else {
+    createMarker(p);
+    p.remove = false;
+  }
 }
 
 function findPolice(police) {
@@ -135,13 +139,10 @@ $(function(){
 
   $('[data-submit-post]').click(function(event){
     event.preventDefault();
-    var url = "/police";
-    lat = $.new_marker.getPosition().lat();
-    lng = $.new_marker.getPosition().lng();
-    $.post(url, 
+    $.post("police",
     {
-      latitude: lat,
-      longitude: lng,
+      latitude: $.new_marker.getPosition().lat(),
+      longitude: $.new_marker.getPosition().lng(),
       type: $.new_marker_type
     },
     function(data) {
@@ -153,11 +154,19 @@ $(function(){
       $.new_marker = null;
 
       createMarker(data);
-    }, "json");
+    });
   });
 
-  $(document).on("click", "[data-confirm]", function() {
-    console.log("!");
+  $(document).on("click", "[data-refresh]", function() {
+    $.post("refresh", {
+      id: $(this).attr("data-refresh")
+    }, updatePolice);
+  });
+
+  $(document).on("click", "[data-report]", function() {
+    $.post("report", {
+      id: $(this).attr("data-report")
+    }, updatePolice);
   });
 });
 

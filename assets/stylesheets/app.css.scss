@@ -8,12 +8,20 @@
   bottom: 0px;
 }
 
-.actions a, .action{ 
-  @include button; 
+@mixin action($color) {
+  @include button(simple, $color);
   text-transform: lowercase;
   font-variant: small-caps;
   font-size: 16px;
   width: 200px;
   margin: 5px;
-  text-align: center;
+  text-align: center;  
 }
+
+.actions a, .action{
+  @include action(#4294f0);
+  &.positive { @include action(#00AA00); }
+  &.negative { @include action(#AA0000); }
+}
+
+

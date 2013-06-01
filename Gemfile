@@ -14,6 +14,7 @@ group :assets do
   gem 'bourbon'
   gem 'sprockets'
   gem 'sass'
+  gem 'ejs'
 end
 
 group :test do

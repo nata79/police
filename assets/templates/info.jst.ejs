@@ -1,4 +1,4 @@
 <p>Avistado há <%= moment(updated_at).fromNow() %>.</p>
 <p>Viste <% if (type == "stop") { %> uma operação stop <% } else { %> um radar <% } %> aqui?</p>
-<div><a class="action" data-confirm=<%= id %> href="#">Sim</a></div>
-<div><a class="action" data-report=<%= id %> href="#">Não</a></div>
+<div><a class="positive action" data-refresh=<%= id %> href="#">Sim</a></div>
+<div><a class="negative action" data-report=<%= id %> href="#">Não</a></div>
