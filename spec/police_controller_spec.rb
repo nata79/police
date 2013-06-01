@@ -32,7 +32,10 @@ describe "Police App" do
     it 'should return a police object if coords and type provided' do
       params = {'latitude' => 41.549196, 'longitude' => -8.412406, 'type' => 'stop'}
       post '/police', params
-      JSON.parse(last_response.body).should eq params
+      object = JSON.parse(last_response.body)
+      object['latitude'].should eq params['latitude']
+      object['longitude'].should eq params['longitude']
+      object['type'].should eq params['type']
     end
   end
 end

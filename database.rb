@@ -26,8 +26,4 @@ class Police < ActiveRecord::Base
   def self.arround latitude, longitude, radius
     near [latitude, longitude], radius, units: :km
   end
-
-  def to_json
-    JSON.dump latitude: latitude, longitude: longitude, type: type
-  end
 end
