@@ -17,6 +17,7 @@ get "/police/?" do
 end
 
 post '/police/?' do
+  content_type :json
   if params[:latitude] and params[:longitude] and params[:type]
     Police.create_if_uniq(latitude: params[:latitude], longitude: params[:longitude], type: params[:type]).to_json
   else
@@ -25,6 +26,7 @@ post '/police/?' do
 end
 
 post '/report/?' do
+  content_type :json
   if params[:id] and Police.exists? id: params[:id]
     police = Police.find(params[:id])
     police.report
@@ -35,6 +37,7 @@ post '/report/?' do
 end
 
 post '/refresh/?' do
+  content_type :json
   if params[:id] and Police.exists? id: params[:id]
     police = Police.find(params[:id])
     police.refresh
