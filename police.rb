@@ -1,6 +1,7 @@
-require 'rubygems'
-require 'sinatra'
+require './database'
+require 'json'
 
-get "/police" do
-  "Hello world!"
+get "/police/?" do
+  content_type :json
+  Police.all.to_json
 end
