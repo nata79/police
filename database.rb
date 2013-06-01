@@ -43,9 +43,9 @@ class Police < ActiveRecord::Base
   end
 private
   def remove_check
-    if updated_at + 1.minutes <= Time.now
+    if updated_at + 2.hours <= Time.now
       destroy
     end
   end
-  handle_asynchronously :remove_check, :run_at => Proc.new { |p| p.updated_at + 1.minutes }
+  handle_asynchronously :remove_check, :run_at => Proc.new { |p| p.updated_at + 2.hours }
 end
