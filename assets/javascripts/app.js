@@ -17,8 +17,12 @@ function initialize() {
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      map.setCenter(new google.maps.LatLng(
-        position.coords.latitude, position.coords.longitude));
+      map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+      new google.maps.Marker({
+        position: map.getCenter(),
+        map: map,
+        title: 'This is you! =)'
+      });
     });
   } else {
     console.error("Geolocation is not supported by this browser.");
@@ -32,9 +36,15 @@ function update(map) {
   var url = "police" +
             "?latitude=" + map.getCenter().lat() +
             "&longitude=" + map.getCenter().lng() +
-            "&radius=20";
+            "&radius=" + radius(map.getBounds());
   $.get(url, function(data) {
-    console.log(data);
+    data.forEach(function(police) {
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(police.latitude, police.longitude),
+        map: map,
+        icon: "/assets/"+police.type+".png"
+      });
+    });
   });
 }
 
@@ -42,7 +52,7 @@ function radius(bounds) {
   center = bounds.getCenter();
   ne = bounds.getNorthEast();
 
-  var r = 6.371; // radius of the earth in kilometers
+  var r = 6371; // radius of the earth in kilometers
 
   // Convert lat or lng from decimal degrees into radians (divide by 57.2958)
   var lat1 = center.lat() / 57.2958;
