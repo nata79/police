@@ -1,7 +1,10 @@
 //= require jquery
+//= require moment
+//= require moment/pt
 //= require_tree ../templates
 
 var map;
+var timeouts = {};
 var polices = [];
 
 function initialize() {
@@ -10,7 +13,6 @@ function initialize() {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
-  var timeouts = {};
   google.maps.event.addListener(map, "bounds_changed", function() {
     clearTimeout(timeouts.police);
     timeouts.police = setTimeout(update, 500);
@@ -61,6 +63,8 @@ function update() {
       } else i++;
     }
   });
+  clearTimeout(timeouts.update);
+  timeouts.update = setTimeout(update, 60000);
 }
 
 function findPolice(police) {
@@ -142,7 +146,7 @@ $(function(){
     },
     function(data) {
       $('[data-submit]').hide();
-      $('[data-create]').show();    
+      $('[data-create]').show();
 
       $.new_marker_type = null;
       $.new_marker.setMap(null);
@@ -150,6 +154,10 @@ $(function(){
 
       createMarker(data);
     }, "json");
+  });
+
+  $(document).on("click", "[data-confirm]", function() {
+    console.log("!");
   });
 });
 
