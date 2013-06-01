@@ -1,5 +1,7 @@
 require './database'
 require 'json'
+require 'geocoder'
+require 'pry'
 
 get "/police/?" do
   content_type :json

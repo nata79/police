@@ -1,14 +1,20 @@
 require 'spec_helper'
 
-describe "Police App" do
-
-  it 'should respond to GET /police' do
-    get '/police'
-    last_response.should be_ok
+describe Police do
+  it 'returns a list of police with a center and a radius' do
+    # Police.arround 41.549003, -8.413168
   end
 
-  it 'should respond to POST /police' do
-    post '/police'
-    last_response.should be_ok
+  it 'doesnt create other police if there is other in a 300m radius' do
+    count = Police.count
+    Police.create_if_uniq type: 'stop', latitude: 41.549003, longitude: -8.413168
+    Police.count.should eq count
+  end
+
+
+  it 'creates other police if there is not other in a 300m radius' do
+    count = Police.count
+    Police.create_if_uniq type: 'stop', latitude: 0, longitude: 0
+    Police.count.should eq (count + 1)
   end
 end
