@@ -185,3 +185,9 @@ function create_police(type){
   $('[data-submit]').show();
 }
 
+
+// Social networks
+
+$(function(){
+  
+});

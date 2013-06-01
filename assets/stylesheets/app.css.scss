@@ -1,7 +1,25 @@
 @import 'bourbon/bourbon';
 @import 'normalize';
 
-#map-canvas { height: 100% }
+$headerTop: 100px;
+$headerRibon: 15px;
+$headerHeight: $headerTop + $headerRibon;
+
+// $color1: #ddd;
+// $color2: #666;
+
+$color1: #FFC345;
+$color2: #D04D3E;
+
+html, body { height: 100%; margin: 0px; }
+
+#map-canvas { 
+  height: auto;
+  width: 100%;
+  position: absolute;
+  top: $headerHeight;
+  bottom: 0;
+}
 
 .actions{
   position: absolute;
@@ -19,9 +37,41 @@
 }
 
 .actions a, .action{
-  @include action(#4294f0);
+  @include action($color1);
+  color: $color2;
   &.positive { @include action(#00AA00); }
   &.negative { @include action(#AA0000); }
 }
 
+.header-top{
+  height: $headerTop;
+  background-color: $color1;
+  position: relative;
+  overflow: hidden;
+}
 
+.header-ribon{
+  height: $headerRibon;
+  background-color: $color2;
+}
+
+#page{ min-height: 100%; }
+
+.title{
+  text-transform: lowercase;
+  font-variant: small-caps;
+  font-family: Helvetica;
+  float: left;
+  color: $color2;
+  margin-left: 20px;
+  font-size: 46px;
+  line-height: 100%;
+}
+
+.facebook{  
+  height: $headerTop;  
+  position: relative;
+  float: right;
+  bottom: -$headerTop + 40px;
+  margin-right: 0px;
+}
