@@ -3,6 +3,10 @@ require 'json'
 require 'geocoder'
 require 'pry'
 
+get "/" do
+  erb :index
+end
+
 get "/police/?" do
   content_type :json
   if params[:latitude] and params[:longitude] and params[:radius]
