@@ -38,13 +38,36 @@ function update() {
             "&radius=" + radius(map.getBounds());
   $.get(url, function(data) {
     polices.forEach(function(police) {
-      police.marker.setMap(null);
+      police.remove = true;
     });
-    polices = [];
-    data.forEach(function(police) {
-      createMarker(police);
+    data.forEach(function(p) {
+      var police = findPolice(p);
+      if (police) {
+        // update police attributes
+        for (var i in p) {
+          police[i] = p[i];
+        }
+        police.infowindow.setContent(JST.info(police));
+        police.remove = false;
+      } else {
+        createMarker(p);
+        p.remove = false;
+      }
     });
+    for (var i = 0; i < polices.length;) {
+      if (polices[i].remove) {
+        polices[i].marker.setMap(null);
+        polices.splice(i, 1);
+      } else i++;
+    }
   });
+}
+
+function findPolice(police) {
+  for (var i = 0; i < polices.length; i++) {
+    if (polices[i].id == police.id) return polices[i];
+  }
+  return false;
 }
 
 function createMarker(police) {
@@ -63,7 +86,6 @@ function createMarker(police) {
     });    
     police.infowindow.open(map, police.marker);
   });
-
   polices.push(police);
 }
 
