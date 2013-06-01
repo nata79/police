@@ -24,7 +24,7 @@ function initialize() {
       new google.maps.Marker({
         position: map.getCenter(),
         map: map,
-        title: 'This is you! =)'
+        icon: "/assets/you.png"
       });
     });
   } else {
