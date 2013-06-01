@@ -35,9 +35,7 @@ function update(map) {
             "?latitude=" + map.getCenter().lat() +
             "&longitude=" + map.getCenter().lng() +
             "&radius=" + radius(map.getBounds());
-  console.log(url);
   $.get(url, function(data) {
-    console.log(data);
     data.forEach(function(police) {
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(police.latitude, police.longitude),
