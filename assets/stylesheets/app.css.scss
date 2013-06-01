@@ -57,15 +57,23 @@ html, body { height: 100%; margin: 0px; }
 
 #page{ min-height: 100%; }
 
-.title{
-  text-transform: lowercase;
-  font-variant: small-caps;
-  font-family: Helvetica;
-  float: left;
-  color: $color2;
-  margin-left: 20px;
-  font-size: 46px;
-  line-height: 100%;
+.branding{
+  img{ float: left; 
+    width: 75px;
+    margin-top: 5px;
+    margin-left: 20px; 
+  }
+
+  .title{
+    text-transform: lowercase;
+    font-variant: small-caps;
+    font-family: Helvetica;
+    float: left;
+    color: $color2;
+    margin-left: 20px;
+    font-size: 46px;
+    line-height: 100%;
+  }
 }
 
 .facebook{  
