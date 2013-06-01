@@ -5,9 +5,17 @@ require 'pry'
 
 get "/police/?" do
   content_type :json
-  Police.all.to_json
+  if params[:latitude] and params[:longitude] and params[:radius]
+    Police.arround(params[:latitude], params[:longitude], params[:radius]).to_json
+  else
+    [].to_json
+  end
 end
 
 post '/police/?' do
-  'hello world!'
+  if params[:latitude] and params[:longitude] and params[:type]
+    Police.create_if_uniq(latitude: params[:latitude], longitude: params[:longitude], type: params[:type]).to_json
+  else
+    {}.to_json
+  end
 end

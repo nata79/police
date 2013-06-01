@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Police do
   it 'returns a list of police with a center and a radius' do
-    # Police.arround 41.549003, -8.413168
+    Police.arround(41.549003, -8.413168, 3).size.should eq 3
   end
 
   it 'doesnt create other police if there is other in a 300m radius' do

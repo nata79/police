@@ -18,7 +18,10 @@ RSpec.configure do |config|
   config.include Rack::Test::Methods
 
   config.before(:each) do
-    Police.create! type: 'stop', latitude: 41.549196, longitude: -8.412406    
+    Police.create! type: 'stop', latitude: 41.549196, longitude: -8.412406
+    Police.create! type: 'stop', latitude: 41.550248, longitude: -8.415958    
+    Police.create! type: 'radar', latitude: 41.551982, longitude: -8.411795
+    Police.create! type: 'stop', latitude: 41.595822, longitude: -8.408737
   end
 
   config.after(:each) do
