@@ -6,13 +6,14 @@
 .actions{
   position: absolute;
   bottom: 0px;
-  a{ 
-    @include button; 
-    text-transform: lowercase;
-    font-variant: small-caps;
-    font-size: 16px;
-    width: 200px;
-    margin: 5px;
-    text-align: center;
-  }
+}
+
+.actions a, .action{ 
+  @include button; 
+  text-transform: lowercase;
+  font-variant: small-caps;
+  font-size: 16px;
+  width: 200px;
+  margin: 5px;
+  text-align: center;
 }

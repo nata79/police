@@ -1,7 +1,8 @@
 //= require jquery
+//= require_tree ../templates
 
 var map;
-var markers = [];
+var polices = [];
 
 function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'), {
@@ -36,19 +37,34 @@ function update() {
             "&longitude=" + map.getCenter().lng() +
             "&radius=" + radius(map.getBounds());
   $.get(url, function(data) {
-    markers.forEach(function(marker) {
-      marker.setMap(null);
+    polices.forEach(function(police) {
+      police.marker.setMap(null);
     });
-    markers = [];
+    polices = [];
     data.forEach(function(police) {
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(police.latitude, police.longitude),
-        map: map,
-        icon: "/assets/"+police.type+".png"
-      });
-      markers.push(marker);
+      createMarker(police);
     });
   });
+}
+
+function createMarker(police) {
+  police.marker = new google.maps.Marker({
+    position: new google.maps.LatLng(police.latitude, police.longitude),
+    map: map,
+    icon: "/assets/"+police.type+".png"
+  });
+
+  police.infowindow = new google.maps.InfoWindow({
+    content: JST.info(police)
+  });
+  google.maps.event.addListener(police.marker, 'click', function() {
+    polices.forEach(function(police) {
+      police.infowindow.close();
+    });    
+    police.infowindow.open(map, police.marker);
+  });
+
+  polices.push(police);
 }
 
 function radius(bounds) {
@@ -103,15 +119,15 @@ $(function(){
       type: $.new_marker_type
     },
     function(data) {
-      $.new_marker.setDraggable(false);
-      markers.push($.new_marker);
-
       $('[data-submit]').hide();
       $('[data-create]').show();    
 
       $.new_marker_type = null;
+      $.new_marker.setMap(null);
       $.new_marker = null;
-    });
+
+      createMarker(data);
+    }, "json");
   });
 });
 
