@@ -1,8 +1,10 @@
 //= require jquery
 
+var map;
+var markers = [];
 
 function initialize() {
-  var map = new google.maps.Map(document.getElementById('map-canvas'), {
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
     zoom: 14,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
@@ -10,9 +12,7 @@ function initialize() {
   var timeouts = {};
   google.maps.event.addListener(map, "bounds_changed", function() {
     clearTimeout(timeouts.police);
-    timeouts.police = setTimeout(function() {
-      update(map);
-    }, 500);
+    timeouts.police = setTimeout(update, 500);
   });
 
   if (navigator.geolocation) {
@@ -28,22 +28,25 @@ function initialize() {
     console.error("Geolocation is not supported by this browser.");
     map.setCenter(new google.maps.LatLng(41.162143, -8.621954)); // Porto
   }
-
-  $.map = map;
 }
 
-function update(map) {
+function update() {
   var url = "police" +
             "?latitude=" + map.getCenter().lat() +
             "&longitude=" + map.getCenter().lng() +
             "&radius=" + radius(map.getBounds());
   $.get(url, function(data) {
+    markers.forEach(function(marker) {
+      marker.setMap(null);
+    });
+    markers = [];
     data.forEach(function(police) {
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(police.latitude, police.longitude),
         map: map,
         icon: "/assets/"+police.type+".png"
       });
+      markers.push(marker);
     });
   });
 }
@@ -101,6 +104,7 @@ $(function(){
     },
     function(data) {
       $.new_marker.setDraggable(false);
+      markers.push($.new_marker);
 
       $('[data-submit]').hide();
       $('[data-create]').show();    
@@ -113,8 +117,8 @@ $(function(){
 
 function create_police(type){
   $.new_marker = new google.maps.Marker({
-    position: $.map.getCenter(),
-    map: $.map,
+    position: map.getCenter(),
+    map: map,
     draggable: true,
     icon: "/assets/"+type+".png",
     animation: google.maps.Animation.DROP
