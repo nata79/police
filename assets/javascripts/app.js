@@ -70,17 +70,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 $(function(){
   $('[data-create-radar]').click(function(event){
     event.preventDefault();
-    $.new_marker = new google.maps.Marker({
-      position: $.map.getCenter(),
-      map: $.map,
-      draggable: true,
-      animation: google.maps.Animation.DROP,
-    });
+    create_police('radar');
+  });
 
-    $.new_marker_type = 'radar';
-
-    $('[data-create]').hide();
-    $('[data-submit]').show();
+  $('[data-create-stop]').click(function(event){
+    event.preventDefault();
+    create_police('stop');
   });
 
   $('[data-submit-cancel]').click(function(event){
@@ -105,8 +100,29 @@ $(function(){
       type: $.new_marker_type
     },
     function(data) {
-      alert('ok');
+      $.new_marker.setDraggable(false);
+
+      $('[data-submit]').hide();
+      $('[data-create]').show();    
+
+      $.new_marker_type = null;
+      $.new_marker = null;
     });
   });
 });
+
+function create_police(type){
+  $.new_marker = new google.maps.Marker({
+    position: $.map.getCenter(),
+    map: $.map,
+    draggable: true,
+    icon: "/assets/"+type+".png",
+    animation: google.maps.Animation.DROP
+  });
+
+  $.new_marker_type = type;
+
+  $('[data-create]').hide();
+  $('[data-submit]').show();
+}
 
